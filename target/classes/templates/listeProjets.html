@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout">
+<link rel="stylesheet" type="text/css" href="webjars/bootstrap/4.3.1/css/bootstrap.min.css" />
+<head>
+<meta charset="utf-8">
+<title>Liste des Projets</title>
+</head>
+<body>
+   <div th:replace="template"></div>
+<div class="container">
+<div class="card">
+  <div class="card-header">
+    Liste des Projets
+  </div>
+  <div class="card-body">    
+      <table class="table table-striped">
+        <tr>
+          <th>ID</th><th>Nom Projet</th><th>Manager</th><th>Cout</th><th>Start Date</th><th>Domaine</th>
+         </tr>  
+           <tr th:each="p:${projets.content}">
+              <td th:text="${p.idProjet}"></td>
+              <td th:text="${p.nomProjet}"></td>
+              <td th:text="${p.Manager}"></td>
+              <td th:text="${p.Cout}"></td>   
+              <td th:text="${p.StartDate}"></td>  
+              
+               <td th:if= "${!#strings.isEmpty(p.domaine)}" th:text="${p.domaine.nomDom}"></td>
+ 			   <td th:if= "${#strings.isEmpty(p.domaine)}" th:text="${'Pas de Domaine'}"></td> 
+              
+               
+             
+              <td sec:authorize="hasAuthority('ADMIN')"><a class="btn btn-success" th:href="@{modifierProjet(id=${p.idProjet}, page=${currentPage},size=${size})}">Editer</a></td>
+              <td  sec:authorize="hasAuthority('ADMIN')" ><a class="btn btn-danger" onclick="return confirm('Etes-vous sûr ?')"
+                th:href="@{supprimerProjet(id=${p.idProjet}, page=${currentPage},size=${size})}">Supprimer</a></td> 
+           </tr>             
+      </table>
+            <ul class="nav nav-pills">
+         <li th:each="page,status:${pages}">
+           <a th:class="${status.index==currentPage?'btn btn-primary':'btn'  }" 
+       th:href="@{ ListeProjets(page=${status.index}, size=${size} ) }"
+              th:text="${status.index }"></a>
+         </li>
+      </ul>
+      </div>
+</div>
+</div>
+</body>
+</html>

@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout">     
+<link rel="stylesheet" type="text/css" href="webjars/bootstrap/4.3.1/css/bootstrap.min.css" />
+<head>
+<meta charset="utf-8">
+<title>Ajout des Projets</title>
+</head>
+<body>
+   <div th:replace="template"></div>
+<div class="container mt-5">
+<div class="card">
+  <div class="card-header" th:if="${mode=='new'}"> Ajout des Projets </div>
+  <div class="card-header" th:if="${mode=='edit'}">Modification des Projets </div>
+  	<div class="card-body">
+	<form th:action="@{saveProjet}" method="post">
+	   
+	    <input hidden name="page" class="form-control" th:value="${page}" />
+		<input hidden name="size" class="form-control" th:value="${size}" />
+	
+		<div class="form-group">
+			<label class="control-label" hidden>ID Projet :</label> 
+		       <input type="hidden" name="idProjet" class="form-control" th:value="${projet.idProjet}"  />
+		</div>					
+		<div class="form-group">
+			<label class="control-label">Nom Projet :</label> 
+			 <input type="text" name="nomProjet" class="form-control" th:value="${projet.nomProjet}"  />
+			<span th:errors= ${projet.nomProjet} class="text-danger"> </span>	 
+		</div>
+		<div class="form-group">
+			<label class="control-label">Manager :</label> 
+			 <input type="text" name="Manager" class="form-control" th:value="${projet.Manager}"  />
+			<span th:errors= ${projet.Manager} class="text-danger"> </span>	 
+		</div>
+		<div class="form-group">
+			<label class="control-label">Cout :</label> 
+		    <input type="text" name="Cout" class="form-control" th:value="${projet.Cout}" />
+		    <span th:errors=${projet.Cout} class="text-danger"> </span> 
+		</div>
+		<div class="form-group">
+			<label class="control-label">Start Date :</label> 
+			<input type="date" name="StartDate" class="form-control"  th:value="${projet.StartDate}"/>
+			 <span th:errors=${projet.StartDate} class="text-danger"> </span> 
+		</div>
+
+					<div class="form-group">
+						<label class="control-label">Domaine :</label> 
+						<select 
+							name="domaine" class="form-control"
+							th:value="${projet.domaine.idDom}"
+							th:if="${!#strings.isEmpty(projet.domaine)}">
+							<option th:each="d:${domaines}" th:if="${mode=='edit'}"
+								th:value="${d.idDom}" th:text="${d.nomDom}"
+								th:selected="${ d.idDom==projet.domaine.idDom}">
+							</option>
+						</select>
+						<!-- s'il s'agit d'un ajout (mode==new) ou d'une modification d'un projet ayant une catégorie null -->
+						<select name="domaine" class="form-control"
+							th:if="${#strings.isEmpty(projet.domaine)}">
+							<option th:each="d:${domaines}" th:value="${d.idDom}"
+								th:text="${d.nomDom}"></option>
+						</select>
+					</div>
+
+
+					<div>
+		<button type="submit" class="btn btn-primary">Valider</button>
+		</div>
+		</form>
+		</div>
+		</div>
+</div>
+
+</body>
+</html>
+
