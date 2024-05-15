@@ -54,7 +54,6 @@
 								th:selected="${ d.idDom==projet.domaine.idDom}">
 							</option>
 						</select>
-						<!-- s'il s'agit d'un ajout (mode==new) ou d'une modification d'un projet ayant une catégorie null -->
 						<select name="domaine" class="form-control"
 							th:if="${#strings.isEmpty(projet.domaine)}">
 							<option th:each="d:${domaines}" th:value="${d.idDom}"
